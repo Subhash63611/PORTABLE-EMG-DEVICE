@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Portable EMG Device</title>
+
+    <!-- update the version number as needed -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-app.js"></script>
+
+    <!-- include only the Firebase features as you need -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-database.js"></script>
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://cdn.rawgit.com/Mikhus/canvas-gauges/gh-pages/download/2.1.7/all/gauge.min.js"></script>
+  
+
+    <script>
+     // REPLACE WITH YOUR web app's Firebase configuration
+     const firebaseConfig = {
+      apiKey: "AIzaSyBK0TWNCfkplnLdW5YWcYbr-GEOX_J3GcM",
+  authDomain: "ms-sams.firebaseapp.com",
+  databaseURL: "https://ms-sams-default-rtdb.firebaseio.com",
+  projectId: "ms-sams",
+  storageBucket: "ms-sams.appspot.com",
+  messagingSenderId: "216012848730",
+  appId: "1:216012848730:web:580a0c2c155867545f6263",
+  measurementId: "G-9KLNKKHJLZ"
+};
+
+      // Initialize firebase
+      firebase.initializeApp(firebaseConfig);
+
+      // Make auth and database references
+      const auth = firebase.auth();
+      const db = firebase.database();
+
+    </script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <!-- <link rel="icon" type="image/png" href="favicon.png"> -->
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+  <!--TOP BAR-->
+  <div>
+    <h1 class="topnav">Portable EMG Device</h1>
+  </div>
+
+  <!--AUTHENTICATION BAR (USER DETAILS/LOGOUT BUTTON)-->
+  <div id="authentication-bar" style="display: none;">
+    <p><span id="authentication-status">User Logged</span>
+       <span id="user-details">USEREMAIL</span>
+       <a href="/" id="logout-link">(logout)</a>
+    </p>
+    <!-- Add the button for turning ON/OFF -->
+    <button id="toggle-button">Turn ON/OFF</button>
+  </div>
+
+  <!--LOGIN FORM-->
+  <div class="form-elements-container" id="login-signup-div" style="display: block;">
+    <div style="display: flex; justify-content: center; align-items: center; padding:20px">
+      <label for="toggle-login-signup" class="p010">Log In</label>
+      <label class="switch">
+          <input type="checkbox" id="toggle-login-signup">
+          <span class="slider-toggle round"></span>
+      </label>
+      <label for="toggle-login-signup" class="p010">Sign Up</label>
+  </div>
+  
+
+  <form id="login-form" style="display: none;">
+    <div class="">
+      <div style="display:flex">
+      <label for="input-email" class="control-label"><b>Email</b></label>
+      <input type="text" placeholder="Enter Username" id="input-email" required>
+    </div>
+
+    <div style="display:flex">
+      <label for="input-password" class="control-label"><b>Password</b></label>
+      <input type="password" placeholder="Enter Password" id="input-password" required>
+    </div>
+    <!-- <a id="signup-button" class="link-button" onclick="showSignUpForm()">Sign Up</a> -->
+      <button type="submit" id="login-button">Log In</button>
+
+
+      <p id="error-message" style="color:red;"></p>
+    </div>
+  </form>
+
+  <!--SIGNUP FORM-->
+<form id="signup-form" style="display: none;">
+  <div class="">
+
+    <div style="display:flex">
+    <label for="input-email-signup" class="control-label"><b>Email</b></label>
+    <input type="text" placeholder="Enter Email" id="input-email-signup" required>
+  </div>
+
+  <div style="display:flex">
+    <label for="input-password-signup" class="control-label"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" id="input-password-signup" required>
+  </div>
+
+  <div style="display:flex">
+    <label for="input-password-confirm" class="control-label"><b>Confirm Password</b></label>
+    <input type="password" placeholder="Confirm Password" id="input-password-confirm" required>
+  </div>
+  <!-- <button type="button" id="signup-button" onclick="showLoginForm()">Back to Login</button> -->
+    <button type="submit" id="signup-button">Sign Up</button>
+    <p id="signup-error-message" style="color:red;"></p>
+  </div>
+</form>
+
+</div>
+
+  <!--CONTENT (SENSOR READINGS)-->
+  <div class="content-sign-in" id="content-sign-in">
+    <div class="cards">       
+    
+      
+       <!--EMG-->
+       <div class="card">
+        <p><i class="fas fa-bullseye" style="color:#000000;"></i> EMG</p>
+        <p><span class="reading"><span id="emg"></span></span></p>
+      </div>
+
+  
+          
+    </div>
+     
+    <!--CHARTS-->
+  <!--  <div id="charts-div" style="display:none"> -->
+    <div id="charts-div" >
+      <!--SET NUMBER OF READINGS INPUT FIELD-->
+      <div class="authentication-bar">
+        <p><b>Graph</b></p>
+      </div>
+
+
+      
+           <!--EMG-->
+     <div class="cards">
+      <div class="card">
+        <p><i class="fas fa-bullseye" style="color:#d0743f;"></i> EMG CHART</p>
+        <div id="chart-emg" class="chart-container"></div>
+      </div>
+    </div>
+   </div>
+ </div>
+    </div>
+  </div>
+
+
+
+  
+
+  <script src="scripts/index.js"></script>
+  <script src="scripts/auth.js"></script>
+  <script src="scripts/charts-definitions.js"></script>
+  </body>
+</html>
